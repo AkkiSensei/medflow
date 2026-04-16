@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedFlow | Enterprise Hospital OS</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+
+    <div id="app-view">
+        <nav>
+            <div class="brand">
+                <i class="fa-solid fa-hospital"></i> MedFlow
+            </div>
+            
+            <button class="nav-btn active" data-target="view-dashboard">
+                <i class="fa-solid fa-chart-pie"></i> Dashboard
+            </button>
+            <button class="nav-btn" data-target="view-admissions">
+                <i class="fa-solid fa-clipboard-user"></i> Admissions
+            </button>
+            <button class="nav-btn" data-target="view-directory">
+                <i class="fa-solid fa-users"></i> Directory
+            </button>
+            
+            <div class="logout-container">
+                <button class="btn-logout" id="systemLockBtn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> System Lock
+                </button>
+            </div>
+        </nav>
+
+        <main>
+            
+            <div id="view-dashboard" class="page active">
+                <header class="page-header">
+                    <div>
+                        <h1>System Overview</h1>
+                        <p class="subtitle">Live telemetry from the MedFlow database.</p>
+                    </div>
+                </header>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Total Records</h3>
+                        <div class="value" id="stat-total">0</div>
+                    </div>
+                    <div class="card border-primary">
+                        <h3 class="text-primary">Active Admissions</h3>
+                        <div class="value text-primary" id="stat-admitted">0</div>
+                    </div>
+                    <div class="card">
+                        <h3>Discharged Patients</h3>
+                        <div class="value" id="stat-discharged">0</div>
+                    </div>
+                </div>
+
+                <div class="metrics-panel">
+                    <div class="metrics-headline">
+                        <h3>Ward Occupancy Analytics</h3>
+                        <span id="occupancy-rate">0% occupancy</span>
+                    </div>
+                    <div id="ward-metrics" class="ward-metrics"></div>
+                </div>
+            </div>
+
+            <div id="view-admissions" class="page">
+                <header class="page-header">
+                    <div>
+                        <h1>Patient Intake</h1>
+                        <p class="subtitle">Register a new patient into the hospital database.</p>
+                    </div>
+                </header>
+
+                <div class="registration-form">
+                    <form id="patientForm">
+                        <div class="form-row">
+                            <input type="text" id="firstName" placeholder="First Name" required>
+                            <input type="text" id="lastName" placeholder="Last Name" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <input type="number" id="age" placeholder="Age" min="0" required>
+                            <select id="gender" required>
+                                <option value="" disabled selected>Select Gender...</option>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <select id="ward" required>
+                                <option value="" disabled selected>Assign Ward...</option>
+                                <option value="GENERAL">General Ward</option>
+                                <option value="ICU">Intensive Care Unit</option>
+                                <option value="MATERNITY">Maternity</option>
+                                <option value="CARDIOLOGY">Cardiology</option>
+                                <option value="PEDIATRIC">Pediatric</option>
+                                <option value="ONCOLOGY">Oncology</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="text" id="reason" placeholder="Primary reason for admission (Optional)" style="flex: 1;">
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <i class="fa-solid fa-user-plus"></i> Process Admission
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="view-directory" class="page">
+                <header class="page-header">
+                    <div>
+                        <h1>Global Directory</h1>
+                        <p class="subtitle">Manage all hospital records and patient statuses.</p>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="ADMITTED">Admitted</button>
+                        <button class="filter-btn" data-filter="DISCHARGED">Discharged</button>
+                    </div>
+                </header>
+
+                <div class="data-container">
+                    <div class="table-toolbar">
+                        <input type="text" id="searchInput" placeholder="Search by first/last name...">
+                        <select id="wardFilter">
+                            <option value="">All Wards</option>
+                            <option value="GENERAL">General</option>
+                            <option value="ICU">ICU</option>
+                            <option value="MATERNITY">Maternity</option>
+                            <option value="CARDIOLOGY">Cardiology</option>
+                            <option value="PEDIATRIC">Pediatric</option>
+                            <option value="ONCOLOGY">Oncology</option>
+                        </select>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient Name</th>
+                                <th>Demographics</th>
+                                <th>Ward</th>
+                                <th>Status</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTableBody">
+                            </tbody>
+                    </table>
+                    <div class="pagination-bar">
+                        <button id="prevPageBtn" class="filter-btn">Previous</button>
+                        <span id="pageLabel">Page 1 of 1</span>
+                        <button id="nextPageBtn" class="filter-btn">Next</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+    <div id="lock-screen" class="lock-screen hidden">
+        <div class="lock-card">
+            <h2>System Locked</h2>
+            <p>Enter your unlock code to continue.</p>
+            <input id="unlockCodeInput" type="password" placeholder="Unlock code">
+            <button id="unlockBtn" class="btn-submit">Unlock System</button>
+        </div>
+    </div>
+
+</body>
+</html>
