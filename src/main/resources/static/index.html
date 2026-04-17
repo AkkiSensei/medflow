@@ -13,171 +13,340 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="js/app.js" defer></script>
 </head>
-<body>
+<body class="medflow-theme-light">
 
-    <div id="app-view">
-        <nav>
-            <div class="brand">
-                <i class="fa-solid fa-hospital"></i> MedFlow
-            </div>
-            
-            <button class="nav-btn active" data-target="view-dashboard">
-                <i class="fa-solid fa-chart-pie"></i> Dashboard
-            </button>
-            <button class="nav-btn" data-target="view-admissions">
-                <i class="fa-solid fa-clipboard-user"></i> Admissions
-            </button>
-            <button class="nav-btn" data-target="view-directory">
-                <i class="fa-solid fa-users"></i> Directory
-            </button>
-            
-            <div class="logout-container">
-                <button class="btn-logout" id="systemLockBtn">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> System Lock
-                </button>
-            </div>
-        </nav>
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-        <main>
-            
-            <div id="view-dashboard" class="page active">
-                <header class="page-header">
-                    <div>
-                        <h1>System Overview</h1>
-                        <p class="subtitle">Live telemetry from the MedFlow database.</p>
-                    </div>
-                </header>
+    <main id="login-screen" class="auth-split-layout">
+        
+        <aside class="auth-hero-panel">
+            <div class="hero-content">
+                <div class="hero-brand">
+                    <i class="fa-solid fa-hospital hero-icon"></i>
+                    <span>MedFlow</span>
+                </div>
+                <h1 class="hero-title">Next-Generation<br>Patient Care.</h1>
+                <p class="hero-subtitle">Unified telemetry, intelligent admissions, and secure directory management for modern healthcare facilities.</p>
                 
-                <div class="dashboard-cards">
-                    <div class="card">
-                        <h3>Total Records</h3>
-                        <div class="value" id="stat-total">0</div>
-                    </div>
-                    <div class="card border-primary">
-                        <h3 class="text-primary">Active Admissions</h3>
-                        <div class="value text-primary" id="stat-admitted">0</div>
-                    </div>
-                    <div class="card">
-                        <h3>Discharged Patients</h3>
-                        <div class="value" id="stat-discharged">0</div>
-                    </div>
-                </div>
-
-                <div class="metrics-panel">
-                    <div class="metrics-headline">
-                        <h3>Ward Occupancy Analytics</h3>
-                        <span id="occupancy-rate">0% occupancy</span>
-                    </div>
-                    <div id="ward-metrics" class="ward-metrics"></div>
+                <div class="hero-trust-badges">
+                    <span class="badge-trust"><i class="fa-solid fa-shield-halved"></i> HIPAA Compliant</span>
+                    <span class="badge-trust"><i class="fa-solid fa-server"></i> 256-bit AES Encryption</span>
                 </div>
             </div>
+            <div class="hero-bg-orb"></div>
+        </aside>
 
-            <div id="view-admissions" class="page">
-                <header class="page-header">
-                    <div>
-                        <h1>Patient Intake</h1>
-                        <p class="subtitle">Register a new patient into the hospital database.</p>
-                    </div>
+        <section class="auth-form-panel">
+            <div class="form-wrapper">
+                <header class="form-header">
+                    <h2>Staff Portal Access</h2>
+                    <p>Enter your credentials to access the hospital management system.</p>
                 </header>
 
-                <div class="registration-form">
-                    <form id="patientForm">
-                        <div class="form-row">
-                            <input type="text" id="firstName" placeholder="First Name" required>
-                            <input type="text" id="lastName" placeholder="Last Name" required>
+                <form id="loginForm" class="enterprise-form" novalidate>
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <div class="input-prefix-wrapper">
+                            <i class="fa-regular fa-id-card input-icon"></i>
+                            <input type="text" id="name" placeholder="e.g. Ritunjay Deo" required minlength="3" autocomplete="name">
                         </div>
-                        
-                        <div class="form-row">
-                            <input type="number" id="age" placeholder="Age" min="0" required>
-                            <select id="gender" required>
-                                <option value="" disabled selected>Select Gender...</option>
-                                <option value="MALE">Male</option>
-                                <option value="FEMALE">Female</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <select id="ward" required>
-                                <option value="" disabled selected>Assign Ward...</option>
-                                <option value="GENERAL">General Ward</option>
-                                <option value="ICU">Intensive Care Unit</option>
-                                <option value="MATERNITY">Maternity</option>
-                                <option value="CARDIOLOGY">Cardiology</option>
-                                <option value="PEDIATRIC">Pediatric</option>
-                                <option value="ONCOLOGY">Oncology</option>
-                            </select>
-                        </div>
+                    </div>
 
-                        <div class="form-row">
-                            <input type="text" id="reason" placeholder="Primary reason for admission (Optional)" style="flex: 1;">
+                    <div class="input-group">
+                        <label for="employeeId">Employee ID</label>
+                        <div class="input-prefix-wrapper">
+                            <i class="fa-solid fa-user-doctor input-icon"></i>
+                            <input type="text" id="employeeId" placeholder="DOC-1001 / STF-2001" required minlength="4" autocomplete="username">
                         </div>
+                    </div>
 
-                        <button type="submit" class="btn-submit" id="submitBtn">
-                            <i class="fa-solid fa-user-plus"></i> Process Admission
-                        </button>
-                    </form>
-                </div>
+                    <div class="input-group">
+                        <label for="password">Security Key</label>
+                        <div class="input-prefix-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="password" placeholder="••••••••" required minlength="8" autocomplete="current-password">
+                            <button type="button" id="togglePasswordBtn" class="btn-icon-inline" aria-label="Toggle password visibility">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="link-forgot">Recover Access</a>
+                    </div>
+
+                    <div id="loginAttemptFlag" class="alert-box error hidden" role="alert"></div>
+
+                    <button type="submit" id="loginBtn" class="btn-primary btn-block">
+                        <i class="fa-solid fa-right-to-bracket"></i> Secure Sign In
+                    </button>
+                </form>
             </div>
+        </section>
+    </main>
 
-            <div id="view-directory" class="page">
-                <header class="page-header">
+    <div id="app-view" class="app-shell hidden">
+
+        <aside class="app-sidebar glass-panel">
+            <header class="sidebar-header">
+                <div class="brand-logo brand-large">
+                    <i class="fa-solid fa-staff-snake"></i>
                     <div>
-                        <h1>Global Directory</h1>
-                        <p class="subtitle">Manage all hospital records and patient statuses.</p>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="ADMITTED">Admitted</button>
-                        <button class="filter-btn" data-filter="DISCHARGED">Discharged</button>
-                    </div>
-                </header>
-
-                <div class="data-container">
-                    <div class="table-toolbar">
-                        <input type="text" id="searchInput" placeholder="Search by first/last name...">
-                        <select id="wardFilter">
-                            <option value="">All Wards</option>
-                            <option value="GENERAL">General</option>
-                            <option value="ICU">ICU</option>
-                            <option value="MATERNITY">Maternity</option>
-                            <option value="CARDIOLOGY">Cardiology</option>
-                            <option value="PEDIATRIC">Pediatric</option>
-                            <option value="ONCOLOGY">Oncology</option>
-                        </select>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Patient Name</th>
-                                <th>Demographics</th>
-                                <th>Ward</th>
-                                <th>Status</th>
-                                <th class="text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="patientTableBody">
-                            </tbody>
-                    </table>
-                    <div class="pagination-bar">
-                        <button id="prevPageBtn" class="filter-btn">Previous</button>
-                        <span id="pageLabel">Page 1 of 1</span>
-                        <button id="nextPageBtn" class="filter-btn">Next</button>
+                        <strong>MedFlow Core</strong>
+                        <small>Operational Console</small>
                     </div>
                 </div>
+            </header>
+
+            <div class="user-chip-container">
+                <div class="user-chip" id="userProfileChip">Loading Profile...</div>
             </div>
 
-        </main>
-    </div>
+            <nav class="sidebar-nav" role="navigation" aria-label="Main Menu">
+                <span class="nav-section-title">Workspace</span>
+                <button class="nav-btn active" data-target="view-dashboard"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
+                <button class="nav-btn" data-target="view-appointments"><i class="fa-solid fa-calendar-days"></i> Appointments</button>
+                <button class="nav-btn" data-target="view-admissions"><i class="fa-solid fa-clipboard-user"></i> Admissions</button>
+                <button class="nav-btn" data-target="view-directory"><i class="fa-solid fa-users"></i> Directory</button>
+                <span class="nav-section-title">Account</span>
+                <button class="nav-btn" data-target="view-profile"><i class="fa-solid fa-user-doctor"></i> My Profile</button>
+            </nav>
 
-    <div id="toast-container" class="toast-container"></div>
-    <div id="lock-screen" class="lock-screen hidden">
-        <div class="lock-card">
-            <h2>System Locked</h2>
-            <p>Enter your unlock code to continue.</p>
-            <input id="unlockCodeInput" type="password" placeholder="Unlock code">
-            <button id="unlockBtn" class="btn-submit">Unlock System</button>
+            <footer class="sidebar-footer">
+                <button class="btn-logout" id="systemLockBtn"><i class="fa-solid fa-shield-halved"></i> Lock Terminal</button>
+            </footer>
+        </aside>
+
+        <div class="app-content-wrapper">
+            <header class="app-topbar glass-panel">
+                <div>
+                    <h2 class="topbar-title">Care Operations</h2>
+                    <p class="topbar-subtitle">Real-time patient and schedule management</p>
+                </div>
+                <div class="topbar-actions">
+                    <button id="notificationsBtn" class="btn-icon" aria-label="Notifications" title="System Alerts">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="app-main-viewport">
+
+                <section id="view-dashboard" class="page active">
+                    <header class="page-header">
+                        <div>
+                            <h1>System Overview</h1>
+                            <p class="subtitle">Live analytics and ward utilization snapshots.</p>
+                        </div>
+                    </header>
+
+                    <div class="dashboard-cards">
+                        <article class="card stat-card">
+                            <span>Total Records</span>
+                            <div class="value" id="stat-total">0</div>
+                        </article>
+                        <article class="card stat-card border-primary highlight-card">
+                            <span>Active Admissions</span>
+                            <div class="value text-primary" id="stat-admitted">0</div>
+                        </article>
+                        <article class="card stat-card">
+                            <span>Discharged Patients</span>
+                            <div class="value" id="stat-discharged">0</div>
+                        </article>
+                    </div>
+
+                    <div class="metrics-panel glass-panel">
+                        <header class="metrics-headline">
+                            <h3>Ward Occupancy Analytics</h3>
+                            <span class="badge-status" id="occupancy-rate">0% occupancy</span>
+                        </header>
+                        <div id="ward-metrics" class="ward-metrics-grid"></div>
+                    </div>
+                </section>
+
+                <section id="view-appointments" class="page">
+                    <header class="page-header">
+                        <div>
+                            <h1>Appointment Board</h1>
+                            <p class="subtitle">Provider schedule and upcoming consultations.</p>
+                        </div>
+                    </header>
+                    <div class="data-container glass-panel">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Provider</th>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Department</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointmentsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-admissions" class="page">
+                    <header class="page-header">
+                        <div>
+                            <h1>New Admission</h1>
+                            <p class="subtitle">Create and assign patient intake records.</p>
+                        </div>
+                    </header>
+
+                    <div class="registration-form-container glass-panel">
+                        <form id="patientForm" class="complex-form">
+                            <fieldset>
+                                <legend>Patient Demographics</legend>
+                                <div class="form-row">
+                                    <div class="input-wrapper"><input type="text" id="firstName" placeholder="First Name" required></div>
+                                    <div class="input-wrapper"><input type="text" id="lastName" placeholder="Last Name" required></div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-wrapper"><input type="number" id="age" placeholder="Age" min="0" required></div>
+                                    <div class="input-wrapper">
+                                        <select id="gender" required>
+                                            <option value="" disabled selected>Select Gender...</option>
+                                            <option value="MALE">Male</option>
+                                            <option value="FEMALE">Female</option>
+                                            <option value="OTHER">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Clinical Assignment</legend>
+                                <div class="form-row">
+                                    <div class="input-wrapper">
+                                        <select id="ward" required>
+                                            <option value="" disabled selected>Assign Ward...</option>
+                                            <option value="GENERAL">General Ward</option>
+                                            <option value="ICU">Intensive Care Unit (ICU)</option>
+                                            <option value="MATERNITY">Maternity</option>
+                                            <option value="CARDIOLOGY">Cardiology</option>
+                                            <option value="PEDIATRIC">Pediatric</option>
+                                            <option value="ONCOLOGY">Oncology</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-wrapper">
+                                        <input type="text" id="reason" placeholder="Primary reason for admission (Optional)">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <button type="submit" class="btn-primary" id="submitBtn"><i class="fa-solid fa-user-plus"></i> Process Admission</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="view-directory" class="page">
+                    <header class="page-header">
+                        <div>
+                            <h1>Patient Directory</h1>
+                            <p class="subtitle">Search, filter, and update registry records.</p>
+                        </div>
+
+                        <div class="filter-group" role="group" aria-label="Filter by patient status">
+                            <button class="filter-btn active" data-filter="all">All Patients</button>
+                            <button class="filter-btn" data-filter="ADMITTED">Admitted</button>
+                            <button class="filter-btn" data-filter="DISCHARGED">Discharged</button>
+                        </div>
+                    </header>
+
+                    <div class="data-container glass-panel">
+                        <header class="table-toolbar">
+                            <div class="search-box">
+                                <i class="fa-solid fa-search"></i>
+                                <input type="text" id="searchInput" placeholder="Search by patient name...">
+                            </div>
+                            <div class="filter-box">
+                                <i class="fa-solid fa-filter"></i>
+                                <select id="wardFilter" aria-label="Filter by Ward">
+                                    <option value="">All Wards</option>
+                                    <option value="GENERAL">General</option>
+                                    <option value="ICU">ICU</option>
+                                    <option value="MATERNITY">Maternity</option>
+                                    <option value="CARDIOLOGY">Cardiology</option>
+                                    <option value="PEDIATRIC">Pediatric</option>
+                                    <option value="ONCOLOGY">Oncology</option>
+                                </select>
+                            </div>
+                        </header>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Registry ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Demographics</th>
+                                        <th>Ward Location</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="patientTableBody"></tbody>
+                            </table>
+                        </div>
+
+                        <footer class="pagination-bar">
+                            <button id="prevPageBtn" class="btn-outline">Previous</button>
+                            <span id="pageLabel" class="pagination-label">Page 1 of 1</span>
+                            <button id="nextPageBtn" class="btn-outline">Next</button>
+                        </footer>
+                    </div>
+                </section>
+
+                <section id="view-profile" class="page">
+                    <header class="page-header">
+                        <div>
+                            <h1>Security Profile</h1>
+                            <p class="subtitle">Identity details and role-based permissions.</p>
+                        </div>
+                    </header>
+                    <div class="profile-card glass-panel">
+                        <div class="profile-avatar"><i class="fa-solid fa-user-shield"></i></div>
+                        <h2 id="profileName" class="profile-name">-</h2>
+                        <p id="profileRole" class="profile-role badge">-</p>
+                        <hr class="divider">
+                        <h3>Granted Permissions</h3>
+                        <div id="profilePermissions" class="permission-list"></div>
+                        <div class="profile-actions">
+                            <button id="logoutProfileBtn" type="button" class="btn-danger-soft">
+                                <i class="fa-solid fa-right-from-bracket"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
         </div>
     </div>
+
+    <dialog id="lock-screen" class="lock-modal hidden">
+        <div class="lock-card">
+            <div class="lock-icon"><i class="fa-solid fa-lock"></i></div>
+            <h2>Terminal Locked</h2>
+            <p>Authentication required to resume session.</p>
+            <div class="input-group">
+                <input id="unlockCodeInput" type="password" placeholder="Enter security pin">
+            </div>
+            <button id="unlockBtn" class="btn-primary btn-block">Unlock Terminal</button>
+        </div>
+    </dialog>
 
 </body>
 </html>
